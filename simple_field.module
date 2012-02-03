@@ -96,7 +96,7 @@ function simple_field_menu() {
 
   $items['admin/structure/simple-field/choose-type'] = array(
     'type' => MENU_LOCAL_ACTION,
-    'title' => 'Add a simple field',
+    'title' => 'Create a new Field',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_type_select_form'),
     'access callback' => 'simple_field_access',
@@ -105,8 +105,7 @@ function simple_field_menu() {
   );
   $items['admin/structure/simple-field/add/%simple_field_type'] = array(
     'type' => MENU_NORMAL_ITEM,
-    'title callback' => 'entity_ui_get_action_title',
-    'title arguments' => array('add', 'simple_field'),
+    'title' => 'Create a new Field',
     'page callback' => 'simple_field_add_page',
     'page arguments' => array(4),
     'access callback' => 'simple_field_access',
@@ -207,8 +206,7 @@ function simple_field_menu_items($info) {
   );
   $items[$path . '/simple-fields/add/%simple_field_type'] = array(
     'type' => MENU_NORMAL_ITEM,
-    'title callback' => 'entity_ui_get_action_title',
-    'title arguments' => array('add', 'simple_field'),
+    'title' => 'Create a new Field',
     'page callback' => 'simple_field_add_with_instance_page',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
     'access callback' => 'simple_field_menu_access',

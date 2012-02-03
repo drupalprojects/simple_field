@@ -72,6 +72,8 @@ function simple_field_add_page($type_info, $form_state = array()) {
  */
 function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
 
+  drupal_set_title(t('Create a new Field'));
+
   $form = array('#tree' => TRUE);
 
   if (empty($entity->type)) {
