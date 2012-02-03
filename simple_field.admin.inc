@@ -111,7 +111,7 @@ function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
     '#weight' => -100,
     '#type' => 'textarea',
     '#title' => t('Help Text'),
-    '#default_value' => isset($simple field->instance_settings['description']) ? $simple field->instance_settings['description'] : '',
+    '#default_value' => isset($entity->instance_settings['description']) ? $entity->instance_settings['description'] : '',
   );
 
   $form['actions'] = array(
