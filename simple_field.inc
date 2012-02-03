@@ -225,6 +225,7 @@ function simple_field_build_instance($entity_type, $bundle, $simplefield) {
   $instance_settings = $simplefield->getSettings('instance');
   $widget_settings = $simplefield->getSettings('widget');
 
+
   $instance = array(
     'field_name' => $field['field_name'],
     'entity_type' => $entity_type,
@@ -236,11 +237,36 @@ function simple_field_build_instance($entity_type, $bundle, $simplefield) {
     'widget' => array(
       'type' => $type_info['type'],
       'settings' => $widget_settings,
-      'weight' => 0,
     ),
     'display' => array(),
   );
 
+  // If a new instance is being added, then find the proper weight for it.
+  if (!field_info_instance($entity_type, $field['field_name'], $bundle)) {
+    $settings = field_bundle_settings($entity_type, $bundle);
+    $base = 0;
+    if (isset($settings['extra_fields']['form']['simple_fields']['weight'])) {
+      $base = $settings['extra_fields']['form']['simple_fields']['weight'];
+    }
+
+    // If there are other simplefields, find the between max weight and base+1
+    $simplefields = simple_field_entity_fields($entity_type, $bundle);
+    if ($simplefields) {
+      $max = -1000;
+      foreach ($simplefields as $sf) {
+        $field = $sf->getField();
+        $inst = field_info_instance($entity_type, $field['field_name'], $bundle);
+        if ($inst['widget']['weight'] > $max) {
+          $max = $inst['widget']['weight'];
+        }
+      }
+      $weight = ($base+1+$max)/2;
+    }
+    else {
+      $weight = $base + 0.1;
+    }
+    $instance['widget']['weight'] = $weight;
+  }
   return $instance;
 }
 
