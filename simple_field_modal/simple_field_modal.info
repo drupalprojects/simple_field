@@ -1,0 +1,6 @@
+name = "Simple Field Modal UI"
+description = "Provide a nice modal UI for Simple Fields using Ctools modals"
+core=7.x
+package="Simple Field"
+dependencies[]=simple_field
+dependencies[]=ctools

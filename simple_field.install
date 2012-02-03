@@ -1,0 +1,70 @@
+<?php
+/**
+ * @file
+ * Install file with schema hooks.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function simple_field_schema() {
+  $tables = array();
+
+  $tables['simple_field'] = array(
+    'description' => 'SimpleField objects',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'field_id' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The user id of the creator of the field',
+      ),
+      'field_settings' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+      'instance_settings' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+      'widget_settings' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+      'formatter_settings' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'serialize' => TRUE,
+      ),
+      'required' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'field_id' => array('field_id'),
+      'type' => array('type'),
+    ),
+  );
+
+  return $tables;
+}
+
