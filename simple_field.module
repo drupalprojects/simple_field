@@ -74,14 +74,14 @@ function simple_field_permission() {
   );
 
   foreach (simple_field_type_info() as $name => $info) {
-    $perms['create ' . $name . ' simple field type'] = array(
-      'title' => t('Create %type simple field type', array('%type' => $info['label'])),
+    $perms['create simple fields with type ' . $name] = array(
+      'title' => t('Create simple field with %type', array('%type' => $info['label'])),
     );
-    $perms['edit ' . $name . ' simple field type'] = array(
-      'title' => t('Edit %type simple field type', array('%type' => $info['label'])),
+    $perms['update simple fields with type ' . $name] = array(
+      'title' => t('Create simple field with %type', array('%type' => $info['label'])),
     );
-    $perms['delete ' . $name . ' simple field type'] = array(
-      'title' => t('Delete %type simple field type', array('%type' => $info['label'])),
+    $perms['delete simple fields with type ' . $name] = array(
+      'title' => t('Create simple field with %type', array('%type' => $info['label'])),
     );
   }
 
@@ -626,7 +626,7 @@ function simple_field_type_access($op, $type, $account = NULL) {
   if (is_array($type)) {
     $type = $type['type'];
   }
-  return user_access($op . ' ' . $type . ' simple field type', $account);
+  return user_access($op . ' simple fields with type ' . $type, $account);
 }
 
 /**
