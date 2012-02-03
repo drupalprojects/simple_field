@@ -209,7 +209,7 @@ function simple_field_menu_items($info) {
     'title' => 'Create a new Field',
     'page callback' => 'simple_field_add_with_instance_page',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
-    'access callback' => 'simple_field_menu_access',
+    'access callback' => 'simple_field_access',
     'access arguments' => array('create', $field_position+2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
@@ -219,7 +219,7 @@ function simple_field_menu_items($info) {
     'title' => 'Add an existing Field',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_instance_add_form', $entity_type, $bundle_arg),
-    'access callback' => 'simple_field_menu_access',
+    'access callback' => 'simple_field_access',
     'access arguments' => array('instance-list', NULL, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
@@ -227,7 +227,7 @@ function simple_field_menu_items($info) {
     'type' => MENU_CALLBACK,
     'page callback' => 'simple_field_instance_add_callback',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
-    'access callback' => 'simple_field_menu_access',
+    'access callback' => 'simple_field_access',
     'access arguments' => array('instance-create', $field_position + 2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
@@ -235,7 +235,7 @@ function simple_field_menu_items($info) {
     'type' => MENU_CALLBACK,
     'page callback' => 'simple_field_instance_delete_callback',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
-    'access callback' => 'simple_field_menu_access',
+    'access callback' => 'simple_field_access',
     'access arguments' => array('instance-delete', $field_position + 2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
