@@ -542,18 +542,15 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
   if (in_array($op, array('update', 'delete', 'view')) && !entity_access($op, $entity, $account)) {
     return FALSE;
   }
-  else if ($op == 'create' && !entity_access($op, 'simple_field', $account)) {
-    return FALSE;
-  }
-
-  // Check that the entity's type is accessible for this op.
-  if ($op == 'create') {
+  else if ($op == 'create') {
+    if (!entity_access($op, 'simple_field', $account)) {
+      return FALSE;
+    }
+    // Have to check this here because type is not available in entity_access
+    // 'create' op.
     if ($entity && !simple_field_type_access($op, $entity, $account)) {
       return FALSE;
     }
-  }
-  else if (in_array($op, array('update','delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
-    return FALSE;
   }
 
   if (in_array($op, array('instance-create', 'instance-delete', 'instance-list')) &&
@@ -590,6 +587,9 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
  */
 function simple_field_entity_access($op, $entity, $account, $entity_type) {
   if (!user_access('administer simple fields', $account)) {
+    return FALSE;
+  }
+  if (in_array($op, array('update','delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
     return FALSE;
   }
   switch ($op) {
