@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * This file has question type definition hooks.
+ * This file has simple field type definition hooks.
  */
 
 

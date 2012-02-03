@@ -5,7 +5,7 @@
  */
 
 /**
- * Page callback for the question details page.
+ * Page callback for the simple field details page.
  */
 function simple_field_view($simplefield) {
 
@@ -52,7 +52,7 @@ function simple_field_view($simplefield) {
 }
 
 /**
- * Page callback for question add/edit/clone page.
+ * Page callback for simple field add/edit/clone page.
  *
  * Using custom page callback to handle processing type information.
  */
@@ -92,7 +92,7 @@ function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
 
   $form['label'] = array(
     '#type' => 'textfield',
-    '#title' => t('Question Text'),
+    '#title' => t('Simple Field Text'),
     '#required' => TRUE,
     '#default_value' => isset($entity->field_settings['label']) ? $entity->field_settings['label'] : '',
   );
@@ -111,7 +111,7 @@ function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
     '#weight' => -100,
     '#type' => 'textarea',
     '#title' => t('Help Text'),
-    '#default_value' => isset($question->instance_settings['description']) ? $question->instance_settings['description'] : '',
+    '#default_value' => isset($simple field->instance_settings['description']) ? $simple field->instance_settings['description'] : '',
   );
 
   $form['actions'] = array(
@@ -125,7 +125,7 @@ function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
 }
 
 /**
- * Submit function for question entity form.
+ * Submit function for simple field entity form.
  */
 function simple_field_form_submit($form, &$form_state) {
   global $user;
@@ -153,7 +153,7 @@ function simple_field_form_submit($form, &$form_state) {
 // Form functions for Simple Field type selection page.
 
 /**
- * Form function for the question type selection form.
+ * Form function for the simple field type selection form.
  *
  * Form is used to select a type for the simple_field. Once the type has been
  * selected, the form redirects to the standard add form with the type in the
@@ -169,7 +169,7 @@ function simple_field_type_select_form($form, &$form_state) {
   }
 
   $form['type'] = array(
-    '#title' => 'Question Type',
+    '#title' => 'Simple Field Type',
     '#type' => 'radios',
     '#options' => $options,
     '#required' => TRUE,
@@ -188,7 +188,7 @@ function simple_field_type_select_form($form, &$form_state) {
 }
 
 /**
- * Submit function for the question type selection form.
+ * Submit function for the simple field type selection form.
  */
 function simple_field_type_select_form_submit($form, &$form_state) {
   $options = array();

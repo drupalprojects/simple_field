@@ -748,7 +748,7 @@ function simple_field_type_load($type) {
 
 
 // ----------------------------------------------------------------------------
-// Functions for querying questions and instances.
+// Functions for querying simple fields and instances.
 
 /**
  * Get an list of all simple_fields for a bundle.

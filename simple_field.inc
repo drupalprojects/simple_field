@@ -68,8 +68,8 @@ class SimpleFieldEntity extends Entity {
   function getSettings($setting_type) {
 
     $settings = array();
-    // Add settings from the question type, but don't allow question to override
-    // the question type settings.
+    // Add settings from the simple field type, but don't allow simple field to override
+    // the simple field type settings.
     $setting_key = $setting_type . '_settings';
 
     if ($this->$setting_key) {
@@ -286,7 +286,7 @@ function _simple_field_field_update_field($field, $prior_field, $has_data) {
       // Mark simplefield as updating to stop race.
       $simplefield->simple_field_stop_race = TRUE;
 
-      // Save the question.
+      // Save the simple field.
       $simplefield->save();
 
       // Mark simplefield as done updating.
@@ -352,8 +352,8 @@ function _simple_field_field_update_instance($instance, $prior_instance) {
  * cache function because we cannot add it directly to the instance or field
  * because then it would get serialized in the DB
  *
- * This and stop_race are meant to stop race conditions where updating the question
- * triggers a field update, and then the field update triggering a question
+ * This and stop_race are meant to stop race conditions where updating the simple field
+ * triggers a field update, and then the field update triggering a simple field
  * update and so on.
  */
 function simple_field_field_updated_flag_cache($type, $id, $val = NULL) {
