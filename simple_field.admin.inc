@@ -163,7 +163,9 @@ function simple_field_type_select_form($form, &$form_state) {
   $types = simple_field_type_info();
   $options = array();
   foreach ($types as $type => $type_info) {
-    $options[$type] = $type_info['label'] . ($type_info['help'] ? ' - <em>' . $type_info['help'] . '</em>' : '');
+    if (simple_field_type_access('create', $type)) {
+      $options[$type] = $type_info['label'] . ($type_info['help'] ? ' - <em>' . $type_info['help'] . '</em>' : '');
+    }
   }
 
   $form['type'] = array(

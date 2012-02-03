@@ -68,7 +68,22 @@ function simple_field_permission() {
     'delete simple field instances' => array(
       'title' => t('Delete simple field instances'),
     ),
+    'list simple field instances' => array(
+      'title' => t('List simple field instances'),
+    ),
   );
+
+  foreach (simple_field_type_info() as $name => $info) {
+    $perms['create ' . $name . ' simple field type'] = array(
+      'title' => t('Create %type simple field type', array('%type' => $info['label'])),
+    );
+    $perms['edit ' . $name . ' simple field type'] = array(
+      'title' => t('Edit %type simple field type', array('%type' => $info['label'])),
+    );
+    $perms['delete ' . $name . ' simple field type'] = array(
+      'title' => t('Delete %type simple field type', array('%type' => $info['label'])),
+    );
+  }
 
   return $perms;
 }
@@ -84,8 +99,8 @@ function simple_field_menu() {
     'title' => 'Add a simple field',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_type_select_form'),
-    'access callback' => 'entity_access',
-    'access arguments' => array('create', 'simple_field'),
+    'access callback' => 'simple_field_access',
+    'access arguments' => array('create', NULL),
     'file' => 'simple_field.admin.inc',
   );
   $items['admin/structure/simple-field/add/%simple_field_type'] = array(
@@ -94,8 +109,8 @@ function simple_field_menu() {
     'title arguments' => array('add', 'simple_field'),
     'page callback' => 'simple_field_add_page',
     'page arguments' => array(4),
-    'access callback' => 'entity_access',
-    'access arguments' => array('create', 'simple_field'),
+    'access callback' => 'simple_field_access',
+    'access arguments' => array('create', 4),
     'file' => 'simple_field.admin.inc',
   );
   $items['admin/structure/simple-field/%simple_field'] = array(
@@ -104,8 +119,8 @@ function simple_field_menu() {
     'title arguments' => array(3),
     'page callback' => 'simple_field_view',
     'page arguments' => array(3),
-    'access callback' => 'entity_access',
-    'access arguments' => array('view', 'simple_field', 3),
+    'access callback' => 'simple_field_access',
+    'access arguments' => array('view', 3),
     'file' => 'simple_field.admin.inc',
   );
 
@@ -158,24 +173,6 @@ function simple_field_enabled($entity_type, $bundle) {
   return TRUE;
 }
 
-function simple_field_menu_access($op, $entity_type, $bundle) {
-  $bundle = field_extract_bundle($entity_type, $bundle);
-
-  if (!simple_field_enabled($entity_type, $bundle) || !user_access('administer simple fields')) {
-    return FALSE;
-  }
-
-  switch ($op) {
-    case 'instance-list':
-    case 'instance-add':
-    case 'instance-delete':
-    case 'field-list':
-    case 'field-add':
-      return TRUE;
-  }
-  return FALSE;
-}
-
 /**
  * Build menu items for a given entity type and bundle
  */
@@ -186,13 +183,6 @@ function simple_field_menu_items($info) {
   $bundle_arg = $info['bundle_arg'];
   $bundle_pos = $info['bundle_pos'];
 
-  // Extract access information, providing defaults.
-  $access = array_intersect_key($bundle_info['admin'], drupal_map_assoc(array('access callback', 'access arguments')));
-  $access += array(
-    'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
-  );
-
   $field_position = count(explode('/', $path));
 
   $items = array();
@@ -202,8 +192,8 @@ function simple_field_menu_items($info) {
     'title' => 'Manage simple fields',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_instance_overview_form', $entity_type, $bundle_arg),
-    'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('instance-list', $entity_type, $bundle_arg),
+    'access callback' => 'simple_field_access',
+    'access arguments' => array('instance-list', NULL, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
   $items[$path . '/simple-fields/choose-type'] = array(
@@ -211,8 +201,8 @@ function simple_field_menu_items($info) {
     'title' => 'Create a new Field',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_add_with_instance_type_select_form', $entity_type, $bundle_arg),
-    'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('field-add', $entity_type, $bundle_arg),
+    'access callback' => 'simple_field_access',
+    'access arguments' => array('create', NULL, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
   $items[$path . '/simple-fields/add/%simple_field_type'] = array(
@@ -222,7 +212,7 @@ function simple_field_menu_items($info) {
     'page callback' => 'simple_field_add_with_instance_page',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
     'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('field-add', $entity_type, $bundle_arg),
+    'access arguments' => array('create', $field_position+2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
 
@@ -232,7 +222,7 @@ function simple_field_menu_items($info) {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simple_field_instance_add_form', $entity_type, $bundle_arg),
     'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('instance-list', $entity_type, $bundle_arg),
+    'access arguments' => array('instance-list', NULL, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
   $items[$path . '/simple-fields/instance-add/%simple_field'] = array(
@@ -240,7 +230,7 @@ function simple_field_menu_items($info) {
     'page callback' => 'simple_field_instance_add_callback',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
     'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('instance-add', $entity_type, $bundle_arg),
+    'access arguments' => array('instance-create', $field_position + 2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
   $items[$path . '/simple-fields/instance-remove/%simple_field'] = array(
@@ -248,7 +238,7 @@ function simple_field_menu_items($info) {
     'page callback' => 'simple_field_instance_delete_callback',
     'page arguments' => array($entity_type, $bundle_arg, $field_position + 2),
     'access callback' => 'simple_field_menu_access',
-    'access arguments' => array('instance-delete', $entity_type, $bundle_arg),
+    'access arguments' => array('instance-delete', $field_position + 2, $entity_type, $bundle_arg),
     'file' => 'simple_field.admin.inc',
   );
 
@@ -533,6 +523,59 @@ function simple_field_save($simplefield) {
 }
 
 /**
+ *
+ *
+ * @param $op
+ *   'create', 'update', 'delete', 'view'
+ *   'instance-create', 'instance-delete', 'instance-list'
+ * @param $entity
+ *   The simple field entity, or the simple field type name if 'create', or NULL
+ *   if create with type unknown, or NULL for instance-list.
+ * @param $entity_type
+ */
+function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, $account = NULL) {
+
+  // Check global permissions.
+  if (!user_access('administer simple fields', $account)) {
+    return FALSE;
+  }
+
+  // Check using standard entity_access
+  if (in_array($op, array('update', 'delete', 'view')) && !entity_access($op, $entity, $account)) {
+    return FALSE;
+  }
+  else if ($op == 'create' && !entity_access($op, 'simple_field', $account)) {
+    return FALSE;
+  }
+
+  // Check that the entity's type is accessible for this op.
+  if ($op == 'create') {
+    if ($entity && !simple_field_type_access($op, $entity, $account)) {
+      return FALSE;
+    }
+  }
+  else if (in_array($op, array('update','delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
+    return FALSE;
+  }
+
+  if (in_array($op, array('instance-create', 'instance-delete', 'instance-list')) &&
+      !simple_field_instance_access($op, $entity, $account)) {
+    return FALSE;
+  }
+
+  // Check that adding an instance to this bundle is allowed.
+  if ($entity_type && $bundle) {
+    $bundle = field_extract_bundle($entity_type, $bundle);
+    if (!simple_field_enabled($entity_type, $bundle)) {
+      return FALSE;
+    }
+  }
+
+
+  return TRUE;
+}
+
+/**
  * SimpleField access function.
  *
  * Access callback for entity module's entity_access function.
@@ -564,6 +607,45 @@ function simple_field_entity_access($op, $entity, $account, $entity_type) {
   return FALSE;
 
 }
+
+/**
+ * Check if the given type is available to this user.
+ *
+ * @param $op
+ *   The operation to access. One of 'create', 'edit', 'delete'.
+ * @param $type
+ *   The type machine name or type info array.
+ * @param $account
+ *   The account to check, or NULL to use current user.
+ *
+ * @return
+ *   Boolean indicating access granted or denied.
+ */
+function simple_field_type_access($op, $type, $account = NULL) {
+  if (!in_array($op, array('create', 'edit', 'delete'))) {
+    return FALSE;
+  }
+  if (is_array($type)) {
+    $type = $type['type'];
+  }
+  return user_access($op . ' ' . $type . ' simple field type', $account);
+}
+
+/**
+ * Check access to instances.
+ */
+function simple_field_instance_access($op, $entity, $account = NULL) {
+  switch ($op) {
+    case 'instance-create':
+      return user_access('create simple field instances', $account);
+    case 'instance-delete':
+      return user_access('delete simple field instances', $account);
+    case 'instance-list':
+      return user_access('list simple field instances', $account);
+  }
+  return FALSE;
+}
+
 
 
 // ----------------------------------------------------------------------------
