@@ -56,9 +56,9 @@ function simple_field_demo_customers_user_default_permissions() {
     'module' => 'simple_field',
   );
 
-  // Exported permission: edit simple fields
-  $permissions['edit simple fields'] = array(
-    'name' => 'edit simple fields',
+  // Exported permission: update simple fields
+  $permissions['update simple fields'] = array(
+    'name' => 'update simple fields',
     'roles' => array(
       0 => 'customer service rep',
     ),

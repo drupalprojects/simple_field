@@ -59,7 +59,7 @@ function simple_field_permission() {
     'create simple fields' => array(
       'title' => t('Create simple fields'),
     ),
-    'edit simple fields' => array(
+    'update simple fields' => array(
       'title' => t('Edit simple fields'),
     ),
     'delete simple fields' => array(
@@ -601,7 +601,7 @@ function simple_field_entity_access($op, $entity, $account, $entity_type) {
     case 'create':
       return user_access('create simple fields', $account);
     case 'update':
-      return user_access('edit simple fields', $account);
+      return user_access('update simple fields', $account);
     case 'delete':
       return user_access('delete simple fields', $account);
   }
@@ -623,7 +623,7 @@ function simple_field_entity_access($op, $entity, $account, $entity_type) {
  *   Boolean indicating access granted or denied.
  */
 function simple_field_type_access($op, $type, $account = NULL) {
-  if (!in_array($op, array('create', 'edit', 'delete'))) {
+  if (!in_array($op, array('create', 'update', 'delete'))) {
     return FALSE;
   }
   if (is_array($type)) {
