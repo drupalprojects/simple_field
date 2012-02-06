@@ -24,9 +24,12 @@ function simple_field_entity_info() {
     'label' => t('Simple Field'),
     'entity class' => 'SimpleFieldEntity',
     'controller class' => 'SimpleFieldEntityController',
+    'features controller class' => 'SimpleFieldFeaturesController',
     'base table' => 'simple_field',
+    'exportable' => TRUE,
     'entity keys' => array(
       'id' => 'id',
+      'name' => 'field_name',
     ),
     'label callback' => 'entity_class_label',
     'uri callback' => 'entity_class_uri',

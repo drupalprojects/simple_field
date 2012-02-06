@@ -142,7 +142,7 @@ class SimpleFieldEntity extends Entity {
 /**
  * Entity controller class for Simple Fields.
  */
-class SimpleFieldEntityController extends EntityAPIController {
+class SimpleFieldEntityController extends EntityAPIControllerExportable {
 
   public function invoke($hook, $entity) {
 
@@ -154,6 +154,7 @@ class SimpleFieldEntityController extends EntityAPIController {
             $field = simple_field_build_field($entity);
             $field = field_create_field($field);
             $entity->field_id = $field['id'];
+            $entity->field_name = $field['field_name'];
           }
           break;
         case 'update':
@@ -194,6 +195,35 @@ class SimpleFieldEntityController extends EntityAPIController {
     return parent::invoke($hook, $entity);
   }
 
+
+}
+
+/**
+ * Entity Features controller class.
+ */
+class SimpleFieldFeaturesController extends EntityDefaultFeaturesController {
+
+  public function export($data, &$export, $module_name = '') {
+    $pipe = parent::export($data, $export, $module_name);
+
+    // Entity module will handle exporting the actual simple field entity, but
+    // we still need to tell features to export the actual Field module field.
+    $instances = field_info_instances();
+    foreach ($data as $name) {
+      $field = field_info_field($name);
+
+      foreach ($instances as $entity_type => $by_type) {
+        foreach ($by_type as $bundle => $insts) {
+          foreach ($insts as $inst) {
+            if ($inst['field_name'] == $name) {
+              $pipe['field'][] = $entity_type . '-' . $bundle . '-' . $name;
+            }
+          }
+        }
+      }
+    }
+    return $pipe;
+  }
 
 }
 
