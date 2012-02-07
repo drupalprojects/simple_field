@@ -54,8 +54,8 @@ function validIndentInterval(original) {
       }
     }
     else {
-      prev = prev || $(prevRow).hasClass('simple-field-root');
-      if (prev && next) {
+
+      if ((prev || $(prevRow).hasClass('simple-field-root')) && next) {
         // Disable dragging if dragging inside of simplefield row group.
         return {
           'min': indent+1,
@@ -64,7 +64,12 @@ function validIndentInterval(original) {
       }
       else {
         // Return normal ranges.
-        return original.apply(this, arguments);
+        indents = original.apply(this, arguments);
+        if (prev) {
+          // If directly after Simple Fields, cannot be a child either.
+          indents.max = Math.min($('.indentation', prevRow).size() - 1, indents.max);
+        }
+        return indents;
       }
     }
   }
