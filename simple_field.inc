@@ -389,7 +389,7 @@ function _simple_field_field_update_instance($instance, $prior_instance) {
 
   $field = field_info_field($instance['field_name']);
   if ($simplefield = simple_field_load_by_field($field['id'])) {
-    if (simple_field_field_updated_flag_cache('instance', $instance['id'])) {
+    if (!simple_field_field_updated_flag_cache('instance', $instance['id'])) {
       if (isset($instance['settings'])) {
         $simplefield->instance_settings = $instance['settings'];
       }
