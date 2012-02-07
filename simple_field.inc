@@ -174,11 +174,13 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
 
             foreach ($entity->getInstances() as $instance) {
               $inst = simple_field_build_instance($instance['entity_type'], $instance['bundle'], $entity);
-              $inst = array_merge($instance, $inst);
-              $inst['settings'] = array_merge($instance['settings'], $inst['settings']);
-              $inst['widget']['settings'] = array_merge($instance['widget']['settings'], $inst['widget']['settings']);
-              simple_field_field_updated_flag_cache('instance', $inst['id'], TRUE);
+              $inst += $instance;
+              $inst['display'] += $instance['display'];
+              $inst['settings'] += $instance['settings'];
+              $inst['widget'] += $instance['widget'];
+              $inst['widget']['settings'] += $instance['widget']['settings'];
 
+              simple_field_field_updated_flag_cache('instance', $inst['id'], TRUE);
               field_update_instance($inst);
               simple_field_field_updated_flag_cache('instance', $inst['id'], FALSE);
             }
