@@ -144,6 +144,15 @@ class SimpleFieldEntity extends Entity {
  */
 class SimpleFieldEntityController extends EntityAPIControllerExportable {
 
+  public function export($entity, $prefix = '') {
+    $vars = get_object_vars($entity);
+    unset($vars[$this->statusKey], $vars[$this->moduleKey], $vars['is_new'], $vars['field_id']);
+    if ($this->nameKey != $this->idKey) {
+      unset($vars[$this->idKey]);
+    }
+    return entity_var_json_export($vars, $prefix);
+  }
+
   public function invoke($hook, $entity) {
 
     if (empty($entity->simple_field_stop_race)) {
