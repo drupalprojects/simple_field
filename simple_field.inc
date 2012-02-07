@@ -159,11 +159,16 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
       switch ($hook) {
         case 'presave':
           $entity->field_created = !$entity->field_id;
-          if (!$entity->field_id && !entity_has_status('simple_field', $entity, ENTITY_IN_CODE)) {
-            $field = simple_field_build_field($entity);
-            $field = field_create_field($field);
-            $entity->field_id = $field['id'];
-            $entity->field_name = $field['field_name'];
+          if (!$entity->field_id) {
+            if (!empty($entity->field_name) && ($existing_field = field_info_field($entity->field_name))) {
+              $entity->field_id = $existing_field['id'];
+            }
+            else {
+              $field = simple_field_build_field($entity);
+              $field = field_create_field($field);
+              $entity->field_id = $field['id'];
+              $entity->field_name = $field['field_name'];
+            }
           }
           break;
         case 'update':
@@ -196,8 +201,12 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
           }
           break;
         case 'delete':
-          $defaults = features_get_default('simple_field');
-          if (!isset($defaults[$entity->field_name])) {//!entity_has_status('simple_field', $entity, ENTITY_IN_CODE)) {
+          $in_code = FALSE;
+          if (module_exists('features')) {
+            $map = features_get_component_map('simple_field');
+            $in_code = isset($map[$entity->field_name]);
+          }
+          if (!$in_code) {//!entity_has_status('simple_field', $entity, ENTITY_IN_CODE)) {
             // Removing Field
             $field = $entity->getField();
             field_delete_field($field['field_name']);
