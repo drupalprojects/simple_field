@@ -325,11 +325,14 @@ function simple_field_form_field_ui_field_overview_form_alter(&$form, &$form_sta
 
   $simplefields = simple_field_entity_fields($entity_type, $bundle);
 
-  $form['fields']['simple_fields']['#attributes']['class'] = array('draggable', 'tabledrag-root');// removes tabledrag-leaf and add 'root'
+  $form['#attached']['js'][] = drupal_get_path('module', 'simple_field') . '/simple_field.js';
+  $form['fields']['simple_fields']['#attributes']['class'] = array('simple-field-root', 'draggable', 'tabledrag-root');// removes tabledrag-leaf and add 'root'
 
   foreach ($simplefields as $simplefield) {
     $field = $simplefield->getField();
     $form['fields'][$field['field_name']]['#simple_field'] = $simplefield;
+    $form['fields'][$field['field_name']]['#attributes']['class'][] = 'simple-field-row';
+
     $parent = &$form['fields'][$field['field_name']]['parent_wrapper']['parent'];
 
     $parent['#options'] = array('simple_fields' => t('Simple Fields'));
