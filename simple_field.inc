@@ -150,7 +150,7 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
       switch ($hook) {
         case 'presave':
           $entity->field_created = !$entity->field_id;
-          if (!$entity->field_id) {
+          if (!$entity->field_id && !entity_has_status('simple_field', $entity, ENTITY_IN_CODE)) {
             $field = simple_field_build_field($entity);
             $field = field_create_field($field);
             $entity->field_id = $field['id'];
@@ -185,8 +185,12 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
           }
           break;
         case 'delete':
-          $field = $entity->getField();
-          field_delete_field($field['field_name']);
+          $defaults = features_get_default('simple_field');
+          if (!isset($defaults[$entity->field_name])) {//!entity_has_status('simple_field', $entity, ENTITY_IN_CODE)) {
+            // Removing Field
+            $field = $entity->getField();
+            field_delete_field($field['field_name']);
+          }
           break;
       }
 
@@ -202,6 +206,12 @@ class SimpleFieldEntityController extends EntityAPIControllerExportable {
  * Entity Features controller class.
  */
 class SimpleFieldFeaturesController extends EntityDefaultFeaturesController {
+
+  public function api() {
+    $info = parent::api();
+//    $info['simple_field']['default_file'] = FEATURES_DEFAULTS_INCLUDED;
+    return $info;
+  }
 
   public function export($data, &$export, $module_name = '') {
     $pipe = parent::export($data, $export, $module_name);
@@ -224,7 +234,6 @@ class SimpleFieldFeaturesController extends EntityDefaultFeaturesController {
     }
     return $pipe;
   }
-
 }
 
 // ----------------------------------------------------------------------------
