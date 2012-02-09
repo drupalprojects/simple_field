@@ -125,17 +125,6 @@ function simple_field_demo_customers_default_simple_field() {
     "field_name" : "sf_datelastcontacted",
     "rdf_mapping" : [  ]
   }');
-  $items['sf_doyouwanttobesentemails'] = entity_import('simple_field', '{
-    "type" : "simple_field_short_answer",
-    "uid" : "3",
-    "field_settings" : { "label" : "Do you want to be sent emails?" },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
-    "required" : "0",
-    "field_name" : "sf_doyouwanttobesentemails",
-    "rdf_mapping" : [  ]
-  }');
   $items['sf_language'] = entity_import('simple_field', '{
     "type" : "simple_field_multichoice_single",
     "uid" : "1",
