@@ -49,7 +49,6 @@ function simple_field_entity_info() {
  */
 function simple_field_permission() {
   $perms = array(
-    // TODO better permission system.
     'administer simple fields' => array(
       'title' => t('Administer simple fields'),
     ),
@@ -95,6 +94,25 @@ function simple_field_permission() {
     $perms['delete simple fields with type ' . $name] = array(
       'title' => t('Delete simple field with %type', array('%type' => $info['label'])),
     );
+  }
+
+  foreach (entity_get_info() as $entity_type => $entity_info) {
+    $perms['administer simple fields for entity ' . $entity_type] = array(
+      'title' => t('Administer Simple Fields for %type', array('%type' => $entity_info['label'])),
+    );
+    /* Probably not a good idea, as it could hide permissions in use.
+    if (variable_get('simple_field_all_enabled_' . $entity_type, FALSE)) {
+      continue;
+    }
+    */
+    foreach ($entity_info['bundles'] as $bundle => $bundle_info) {
+      $perms['administer simple fields for entity ' . $entity_type . ' bundle ' . $bundle] = array(
+        'title' => t('Administer Simple Fields for %type bundle %bundle', array(
+          '%type' => $entity_info['label'],
+          '%bundle' => $bundle_info['label'],
+        )),
+      );
+    }
   }
 
   return $perms;
@@ -185,9 +203,15 @@ function simple_field_bundle_info() {
   return $bundles;
 }
 
-function simple_field_enabled($entity_type, $bundle) {
-  return variable_get('simple_field_all_enabled_' . $entity_type, FALSE) ||
-         variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE);
+function simple_field_enabled($entity_type, $bundle, $account = NULL) {
+  if (!variable_get('simple_field_all_enabled_' . $entity_type, FALSE) &&
+      !variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE)) {
+    return FALSE;
+  }
+
+  return user_access('administer simple fields', $account) ||
+         user_access('administer simple fields for entity ' . $entity_type, $account) ||
+         user_access('administer simple fields for entity ' . $entity_type . ' bundle ' . $bundle, $account);
 }
 
 /**
