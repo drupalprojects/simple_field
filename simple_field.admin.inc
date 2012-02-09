@@ -254,7 +254,7 @@ function simple_field_instance_overview_form($form, &$form_state, $entity_type, 
     $row['data'][] = check_plain($simplefield->label());
     $row['data'][] = check_plain($simplefield->getTypeInfo('label'));
     $row['data'][] = l(
-      t('delete'),
+      t('remove'),
       $admin_path . '/simple-fields/instance-remove/' . $simplefield->identifier(),
       array('query' => array(
         'token' => drupal_get_token('delete' . $entity_type . $bundle . $simplefield->identifier()),
