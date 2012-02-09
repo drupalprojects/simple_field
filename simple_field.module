@@ -96,33 +96,41 @@ function simple_field_permission() {
     );
   }
 
-  foreach (entity_get_info() as $entity_type => $entity_info) {
-    $perms['administer simple fields for entity ' . $entity_type] = array(
-      'title' => t('Administer Simple Fields for %type', array('%type' => $entity_info['label'])),
-    );
     /**
-     * This potentially hides permissions that people might actually HAVE, so
-     * please make sure to adhere to the comment below.
-     */
-    if (variable_get('simple_field_all_enabled_' . $entity_type, FALSE)) {
-      continue;
-    }
-
-    /**
-     * These permissions are not visible if 'all' is selected, which means that
-     * people might have the permissions and technically not be allowed to
-     * access the bundle because they don't have the 'all' permission.
+     * These permissions are visible depending on types that are enabled, which
+     * means that people might have the permissions and technically not be
+     * allowed to access the bundle because they don't have the 'all' permission
+     * or because they types for this permission is disabled.
      *
-     * To avoid this weirdness, don't use this permission directly. Only use it
-     * indirectly via 'simple_field_enabled'.
+     * To avoid this weirdness, don't use these permissions directly. Only use
+     * them indirectly via 'simple_field_enabled'.
      */
-    foreach ($entity_info['bundles'] as $bundle => $bundle_info) {
-      $perms['administer simple fields for entity ' . $entity_type . ' bundle ' . $bundle] = array(
-        'title' => t('Administer Simple Fields for %type bundle %bundle', array(
-          '%type' => $entity_info['label'],
-          '%bundle' => $bundle_info['label'],
-        )),
-      );
+  foreach (entity_get_info() as $entity_type => $entity_info) {
+    $type_perms = array();
+    $type_perms['administer simple fields for entity ' . $entity_type] = array(
+      'title' => t('Administer Simple Fields for Entity Type %type', array('%type' => $entity_info['label'])),
+    );
+    if (!variable_get('simple_field_all_enabled_' . $entity_type, FALSE)) {
+      foreach ($entity_info['bundles'] as $bundle => $bundle_info) {
+        if (!variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE)) {
+          continue;
+        }
+        $type_perms['administer simple fields for entity ' . $entity_type . ' bundle ' . $bundle] = array(
+          'title' => t('Administer Simple Fields for Entity Type %type bundle %bundle', array(
+            '%type' => $entity_info['label'],
+            '%bundle' => $bundle_info['label'],
+          )),
+        );
+      }
+
+      if (count($type_perms) > 1) {
+        // In none of the bundles are enabled, showing the permissio for
+        // administering the entity type is useless.
+        $perms += $type_perms;
+      }
+    }
+    else {
+      $perms += $type_perms;
     }
   }
 
