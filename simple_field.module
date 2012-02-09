@@ -74,6 +74,15 @@ function simple_field_permission() {
     'list simple field instances' => array(
       'title' => t('List simple field instances'),
     ),
+    'create all simple field types' => array(
+      'title' => t('Create all simple field types'),
+    ),
+    'update all simple field types' => array(
+      'title' => t('Update all simple field types'),
+    ),
+    'delete all simple field types' => array(
+      'title' => t('Delete all simple field types'),
+    ),
   );
 
   foreach (simple_field_type_info() as $name => $info) {
@@ -632,7 +641,9 @@ function simple_field_type_access($op, $type, $account = NULL) {
   if (is_array($type)) {
     $type = $type['type'];
   }
-  return user_access($op . ' simple fields with type ' . $type, $account);
+  return user_access($op . ' all simple field types', $account) ||
+         user_access($op . ' simple fields with type ' . $type, $account);
+
 }
 
 /**
