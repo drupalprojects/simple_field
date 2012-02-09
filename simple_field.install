@@ -84,6 +84,17 @@ function simple_field_schema() {
   return $tables;
 }
 
+/**
+ * Implements hook_uninstall().
+ */
+function simple_field_uninstall() {
+  db_delete('variable')
+    ->condition(db_and()
+      ->condition('name', 'simple_field_%', 'LIKE')
+      ->condition('name', 'simple_field_formatter_%', 'NOT LIKE')
+    )
+    ->execute();
+}
 
 /**
  * Add new columns for exportability settings.
