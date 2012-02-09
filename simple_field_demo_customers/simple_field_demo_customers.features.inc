@@ -40,3 +40,31 @@ function simple_field_demo_customers_node_info() {
   );
   return $items;
 }
+
+/**
+ * Implements hook_default_simple_field().
+ */
+function simple_field_demo_customers_default_simple_field() {
+  $items = array();
+  $items['sf_doyouwanttoaddthis'] = entity_import('simple_field', '{
+    "type" : "simple_field_yesno",
+    "uid" : "1",
+    "field_settings" : {
+      "allowed_values" : { "1" : "Yes", "0" : "No" },
+      "allowed_values_function" : "",
+      "label" : "Do you want to add this?"
+    },
+    "instance_settings" : {
+      "allowed_values" : [  ],
+      "allowed_values_function" : "",
+      "description" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : [  ],
+    "formatter_settings" : [  ],
+    "required" : "0",
+    "field_name" : "sf_doyouwanttoaddthis",
+    "rdf_mapping" : [  ]
+  }');
+  return $items;
+}
