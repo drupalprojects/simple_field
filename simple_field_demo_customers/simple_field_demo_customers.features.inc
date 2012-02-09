@@ -46,24 +46,110 @@ function simple_field_demo_customers_node_info() {
  */
 function simple_field_demo_customers_default_simple_field() {
   $items = array();
-  $items['sf_doyouwanttoaddthis'] = entity_import('simple_field', '{
-    "type" : "simple_field_yesno",
+  $items['sf_address'] = entity_import('simple_field', '{
+    "type" : "simple_field_long_answer",
+    "uid" : "1",
+    "field_settings" : { "label" : "Address" },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_address",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_availability'] = entity_import('simple_field', '{
+    "type" : "simple_field_multichoice_multi",
     "uid" : "1",
     "field_settings" : {
-      "allowed_values" : { "1" : "Yes", "0" : "No" },
-      "allowed_values_function" : "",
-      "label" : "Do you want to add this?"
+      "allowed_values" : {
+        "Morning" : "Morning",
+        "Afternoon" : "Afternoon",
+        "Evening" : "Evening"
+      },
+      "label" : "Availability"
     },
-    "instance_settings" : {
-      "allowed_values" : [  ],
-      "allowed_values_function" : "",
-      "description" : "",
-      "user_register_form" : false
-    },
-    "widget_settings" : [  ],
-    "formatter_settings" : [  ],
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
     "required" : "0",
-    "field_name" : "sf_doyouwanttoaddthis",
+    "field_name" : "sf_availability",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_datelastcontacted'] = entity_import('simple_field', '{
+    "type" : "simple_field_single_date",
+    "uid" : "1",
+    "field_settings" : { "label" : "Date last contacted" },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_datelastcontacted",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_doyouwanttobesentemails'] = entity_import('simple_field', '{
+    "type" : "simple_field_short_answer",
+    "uid" : "3",
+    "field_settings" : { "label" : "Do you want to be sent emails?" },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_doyouwanttobesentemails",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_language'] = entity_import('simple_field', '{
+    "type" : "simple_field_multichoice_single",
+    "uid" : "1",
+    "field_settings" : {
+      "allowed_values" : { "French" : "French", "English" : "English" },
+      "label" : "Language"
+    },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_language",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_numberoftimescontacted'] = entity_import('simple_field', '{
+    "type" : "simple_field_integer",
+    "uid" : "1",
+    "field_settings" : { "label" : "Number of times contacted" },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_numberoftimescontacted",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_phonenumber'] = entity_import('simple_field', '{
+    "type" : "simple_field_short_answer",
+    "uid" : "1",
+    "field_settings" : { "label" : "Phone Number" },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_phonenumber",
+    "rdf_mapping" : [  ]
+  }');
+  $items['sf_productsofinterest'] = entity_import('simple_field', '{
+    "type" : "simple_field_multichoice_multi",
+    "uid" : "1",
+    "field_settings" : {
+      "allowed_values" : {
+        "Tupperware" : "Tupperware",
+        "Kitchen Supplies" : "Kitchen Supplies",
+        "Knives" : "Knives",
+        "Fancy Soaps" : "Fancy Soaps"
+      },
+      "label" : "Products of Interest"
+    },
+    "instance_settings" : { "description" : "" },
+    "widget_settings" : null,
+    "formatter_settings" : null,
+    "required" : "0",
+    "field_name" : "sf_productsofinterest",
     "rdf_mapping" : [  ]
   }');
   return $items;
