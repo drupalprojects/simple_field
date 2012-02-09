@@ -50,9 +50,13 @@ function simple_field_demo_customers_default_simple_field() {
     "type" : "simple_field_long_answer",
     "uid" : "1",
     "field_settings" : { "label" : "Address" },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "text_processing" : 0,
+      "user_register_form" : false
+    },
+    "widget_settings" : { "rows" : 5 },
+    "formatter_settings" : [  ],
     "required" : "0",
     "field_name" : "sf_address",
     "rdf_mapping" : [  ]
@@ -68,9 +72,14 @@ function simple_field_demo_customers_default_simple_field() {
       },
       "label" : "Availability"
     },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "allowed_values" : [  ],
+      "allowed_values_function" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : [  ],
+    "formatter_settings" : [  ],
     "required" : "0",
     "field_name" : "sf_availability",
     "rdf_mapping" : [  ]
@@ -79,9 +88,39 @@ function simple_field_demo_customers_default_simple_field() {
     "type" : "simple_field_single_date",
     "uid" : "1",
     "field_settings" : { "label" : "Date last contacted" },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "default_value" : "blank",
+      "todate" : "",
+      "granularity" : {
+        "year" : "year",
+        "month" : "month",
+        "day" : "day",
+        "hour" : "hour",
+        "minute" : "minute"
+      },
+      "tz_handling" : "site",
+      "timezone_db" : "UTC",
+      "default_value_code" : "",
+      "default_value2" : "same",
+      "default_value_code2" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : {
+      "input_format_custom" : "Y-m-d",
+      "input_format" : "m\\u002Fd\\u002FY - H:i:s",
+      "increment" : 15,
+      "text_parts" : [  ],
+      "year_range" : "-3:+3",
+      "label_position" : "above"
+    },
+    "formatter_settings" : {
+      "format_type" : "long",
+      "multiple_number" : "",
+      "multiple_from" : "",
+      "multiple_to" : "",
+      "fromto" : "both"
+    },
     "required" : "0",
     "field_name" : "sf_datelastcontacted",
     "rdf_mapping" : [  ]
@@ -104,9 +143,14 @@ function simple_field_demo_customers_default_simple_field() {
       "allowed_values" : { "French" : "French", "English" : "English" },
       "label" : "Language"
     },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "allowed_values" : [  ],
+      "allowed_values_function" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : [  ],
+    "formatter_settings" : [  ],
     "required" : "0",
     "field_name" : "sf_language",
     "rdf_mapping" : [  ]
@@ -115,9 +159,21 @@ function simple_field_demo_customers_default_simple_field() {
     "type" : "simple_field_integer",
     "uid" : "1",
     "field_settings" : { "label" : "Number of times contacted" },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "min" : "",
+      "max" : "",
+      "prefix" : "",
+      "suffix" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : [  ],
+    "formatter_settings" : {
+      "thousand_separator" : " ",
+      "decimal_separator" : ".",
+      "scale" : 0,
+      "prefix_suffix" : true
+    },
     "required" : "0",
     "field_name" : "sf_numberoftimescontacted",
     "rdf_mapping" : [  ]
@@ -126,9 +182,14 @@ function simple_field_demo_customers_default_simple_field() {
     "type" : "simple_field_short_answer",
     "uid" : "1",
     "field_settings" : { "label" : "Phone Number" },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "max_length" : 255,
+      "text_processing" : 0,
+      "user_register_form" : false
+    },
+    "widget_settings" : { "size" : 60 },
+    "formatter_settings" : [  ],
     "required" : "0",
     "field_name" : "sf_phonenumber",
     "rdf_mapping" : [  ]
@@ -145,9 +206,14 @@ function simple_field_demo_customers_default_simple_field() {
       },
       "label" : "Products of Interest"
     },
-    "instance_settings" : { "description" : "" },
-    "widget_settings" : null,
-    "formatter_settings" : null,
+    "instance_settings" : {
+      "description" : "",
+      "allowed_values" : [  ],
+      "allowed_values_function" : "",
+      "user_register_form" : false
+    },
+    "widget_settings" : [  ],
+    "formatter_settings" : [  ],
     "required" : "0",
     "field_name" : "sf_productsofinterest",
     "rdf_mapping" : [  ]
