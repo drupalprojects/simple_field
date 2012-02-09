@@ -106,6 +106,15 @@ function simple_field_permission() {
 function simple_field_menu() {
   $items = array();
 
+  $items['admin/structure/simple-field/settings'] = array(
+    'type' => MENU_LOCAL_TASK,
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('simple_field_admin_settings_form'),
+    'access arguments' => array('administer simple fields'),
+    'file' => 'simple_field.admin.inc',
+  );
+
   $items['admin/structure/simple-field/choose-type'] = array(
     'type' => MENU_LOCAL_ACTION,
     'title' => 'Create a new Field',
@@ -177,11 +186,8 @@ function simple_field_bundle_info() {
 }
 
 function simple_field_enabled($entity_type, $bundle) {
-
-  if (($entity_type == 'node' || $entity_type == 'comment') && !variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE)) {
-    return FALSE;
-  }
-  return TRUE;
+  return variable_get('simple_field_all_enabled_' . $entity_type, FALSE) ||
+         variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE);
 }
 
 /**

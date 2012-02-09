@@ -2,6 +2,7 @@ name=Simple Fields UI
 description="Provides a simplified UI for creating and adding fields to entities."
 core=7.x
 package = "Simple Field"
+configure = admin/structure/simple-field/settings
 dependencies[]=field
 dependencies[]=entity
 files[]=simple_field.inc

@@ -5,6 +5,80 @@
  */
 
 /**
+ *
+ */
+function simple_field_admin_settings_form($form, &$form_state) {
+
+  $form['types'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Entity Types'),
+    '#description' => t('Enable the \'Manage Simple Fields\' tab for specific entity types and bundles.'),
+    '#tree' => TRUE,
+  );
+
+  foreach (entity_get_info() as $entity_type => $entity_info) {
+    $options = array();
+    $defaults = array();
+    foreach ($entity_info['bundles'] as $bundle => $bundle_info) {
+      $options[$bundle] = $bundle_info['label'];
+      $defaults[$bundle] = variable_get('simple_field_enabled_' . $entity_type . '_' . $bundle, FALSE) ? $bundle : FALSE;
+    }
+    $defaults['__all'] = variable_get('simple_field_all_enabled_' . $entity_type, FALSE) ? '__all' : FALSE;
+
+    // @TODO: Don't use checkboxes for entity types w/ only one bundle, like
+    // users, vocabularies and files.
+    $form['types'][$entity_type] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Simple Field enabled on %type bundles:', array('%type' => $entity_info['label'])),
+      '#options' => array('__all' => t('All Bundles')) + $options,
+      '#default_value' => $defaults,
+    );
+
+    // Add #states each checkbox to disable when 'all' selected.
+    foreach ($options as $k => $v) {
+      $form['types'][$entity_type] += array($k => array());
+      $form['types'][$entity_type][$k] += array('#states' => array());
+      $form['types'][$entity_type][$k]['#states'] += array('!visible' => array());
+      $form['types'][$entity_type][$k]['#states']['!visible'] += array(
+        ':input[name="types[' . $entity_type . '][__all]"]' => array('checked' => TRUE),
+      );
+    }
+  }
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  return $form;
+}
+
+function simple_field_admin_settings_form_submit($form, &$form_state) {
+
+  if (empty($form_state['values']['types'])) return;
+
+  foreach ($form_state['values']['types'] as $entity_type => $bundles) {
+    $all = !empty($bundles['__all']);
+    unset($bundles['__all']);
+    variable_set('simple_field_all_enabled_' . $entity_type, $all);
+
+    foreach ($bundles as $bundle => $enabled) {
+      $var = 'simple_field_enabled_' . $entity_type . '_' . $bundle;
+      if ($enabled) {
+        variable_set($var, TRUE);
+      }
+      else if (variable_get($var, FALSE)) {
+        // Using variable_del to disable to avoid having TONS of variables when
+        // there are a lot of bundes. Chances are 'all' will be selected for
+        // them anyway, so saving a variable for each one would be a waste.
+        variable_del($var);
+      }
+    }
+  }
+}
+
+/**
  * Page callback for the simple field details page.
  */
 function simple_field_view($simplefield) {
