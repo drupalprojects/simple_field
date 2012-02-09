@@ -107,16 +107,20 @@ class SimpleFieldEntity extends Entity {
     $instances = field_info_instances();
 
     // Filter the instances by provided type and bundle.
-    if (isset($entity_type) && isset($instances[$entity_type])) {
-      $instances = array($entity_type => $instances[$entity_type]);
-      if (isset($bundle) && isset($instances[$entity_type][$bundle])) {
-        $instances[$entity_type] = array($bundle => $instances[$entity_type][$bundle]);
+    if (isset($entity_type)) {
+      $instances = array(
+        $entity_type => isset($instances[$entity_type]) ? $instances[$entity_type] : array(),
+      );
+      if (isset($bundle)) {
+        $instances[$entity_type] = array(
+          $bundle => isset($instances[$entity_type][$bundle]) ? $instances[$entity_type][$bundle] : array(),
+        );
       }
     }
 
     // Aggregate instances of this field.
     $field_instances = array();
-    if (!empty($field['bundle'])) {
+    if (!empty($field['bundles'])) {
       foreach ($field['bundles'] as $entity_type => $bundles) {
         foreach ($bundles as $bundle) {
           if (isset($instances[$entity_type][$bundle][$field_name])) {
@@ -135,10 +139,6 @@ class SimpleFieldEntity extends Entity {
     $field = $this->getField();
     return $field && field_has_data($field);
   }
-
-
-
-
 }
 
 /**
