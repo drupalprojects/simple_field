@@ -149,8 +149,11 @@ function simple_field_add_page($type_info, $form_state = array()) {
  * Add/Edit/Clone form entity API module.
  */
 function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
-
-  drupal_set_title(t('Create a new Field'));
+  if (isset($form_state['op'])) {
+    if ($form_state['op'] == 'add') {
+      drupal_set_title(t('Create a new Field'));
+    }
+  }
 
   $form = array('#tree' => TRUE);
 
