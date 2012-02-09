@@ -90,10 +90,10 @@ function simple_field_permission() {
       'title' => t('Create simple field with %type', array('%type' => $info['label'])),
     );
     $perms['update simple fields with type ' . $name] = array(
-      'title' => t('Create simple field with %type', array('%type' => $info['label'])),
+      'title' => t('Update simple field with %type', array('%type' => $info['label'])),
     );
     $perms['delete simple fields with type ' . $name] = array(
-      'title' => t('Create simple field with %type', array('%type' => $info['label'])),
+      'title' => t('Delete simple field with %type', array('%type' => $info['label'])),
     );
   }
 
