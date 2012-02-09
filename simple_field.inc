@@ -116,10 +116,12 @@ class SimpleFieldEntity extends Entity {
 
     // Aggregate instances of this field.
     $field_instances = array();
-    foreach ($field['bundles'] as $entity_type => $bundles) {
-      foreach ($bundles as $bundle) {
-        if (isset($instances[$entity_type][$bundle][$field_name])) {
-          $field_instances[] = $instances[$entity_type][$bundle][$field_name];
+    if (!empty($field['bundle'])) {
+      foreach ($field['bundles'] as $entity_type => $bundles) {
+        foreach ($bundles as $bundle) {
+          if (isset($instances[$entity_type][$bundle][$field_name])) {
+            $field_instances[] = $instances[$entity_type][$bundle][$field_name];
+          }
         }
       }
     }

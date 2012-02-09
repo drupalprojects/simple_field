@@ -235,6 +235,7 @@ function simple_field_demo_customers_field_default_fields() {
           'year' => 'year',
         ),
         'label' => 'Date last contacted',
+        'repeat' => 0,
         'timezone_db' => 'UTC',
         'todate' => '',
         'tz_handling' => 'none',
@@ -257,6 +258,7 @@ function simple_field_demo_customers_field_default_fields() {
             'multiple_from' => '',
             'multiple_number' => '',
             'multiple_to' => '',
+            'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
           'weight' => '5',
@@ -293,10 +295,12 @@ function simple_field_demo_customers_field_default_fields() {
       'widget' => array(
         'module' => 'date',
         'settings' => array(
+          'display_all_day' => 0,
           'increment' => 15,
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => 'Y-m-d',
           'label_position' => 'above',
+          'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-3:+3',
         ),

@@ -5,7 +5,7 @@
  */
 
 /**
- *
+ * Form callback for 'admin/structure/simple-fields/settings'.
  */
 function simple_field_admin_settings_form($form, &$form_state) {
 
@@ -54,6 +54,9 @@ function simple_field_admin_settings_form($form, &$form_state) {
   return $form;
 }
 
+/**
+ * Submit handler to save entity and bundle settings.
+ */
 function simple_field_admin_settings_form_submit($form, &$form_state) {
 
   if (empty($form_state['values']['types'])) return;
@@ -70,8 +73,9 @@ function simple_field_admin_settings_form_submit($form, &$form_state) {
       }
       else if (variable_get($var, FALSE)) {
         // Using variable_del to disable to avoid having TONS of variables when
-        // there are a lot of bundes. Chances are 'all' will be selected for
-        // them anyway, so saving a variable for each one would be a waste.
+        // there are a lot of bundles. Chances are 'all' will be selected for
+        // entity types with lots of bundles anyway, so saving a variable for
+        // each one saying FALSE would be a waste.
         variable_del($var);
       }
     }
@@ -153,6 +157,10 @@ function simple_field_form($form, &$form_state, $entity, $op = 'edit') {
   if (empty($entity->type)) {
     drupal_set_message(t('You must choose a type first'));
     return;
+  }
+
+  if ($insts = $entity->getInstances()) {
+    drupal_set_message(t('Any changes made will effect <strong>all</strong> instances of this field.'), 'warning');
   }
 
   $form['type'] = array(

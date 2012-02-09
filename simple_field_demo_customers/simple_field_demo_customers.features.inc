@@ -56,10 +56,10 @@ function simple_field_demo_customers_default_simple_field() {
       "user_register_form" : false
     },
     "widget_settings" : { "rows" : 5 },
-    "formatter_settings" : [  ],
+    "formatter_settings" : [],
     "required" : "0",
     "field_name" : "sf_address",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_availability'] = entity_import('simple_field', '{
     "type" : "simple_field_multichoice_multi",
@@ -74,15 +74,15 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "instance_settings" : {
       "description" : "",
-      "allowed_values" : [  ],
+      "allowed_values" : [],
       "allowed_values_function" : "",
       "user_register_form" : false
     },
-    "widget_settings" : [  ],
-    "formatter_settings" : [  ],
+    "widget_settings" : [],
+    "formatter_settings" : [],
     "required" : "0",
     "field_name" : "sf_availability",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_datelastcontacted'] = entity_import('simple_field', '{
     "type" : "simple_field_single_date",
@@ -108,9 +108,9 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "widget_settings" : {
       "input_format_custom" : "Y-m-d",
-      "input_format" : "m\\u002Fd\\u002FY - H:i:s",
+      "input_format" : "m\\/d\\/Y - H:i:s",
       "increment" : 15,
-      "text_parts" : [  ],
+      "text_parts" : [],
       "year_range" : "-3:+3",
       "label_position" : "above"
     },
@@ -123,7 +123,7 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "required" : "0",
     "field_name" : "sf_datelastcontacted",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_language'] = entity_import('simple_field', '{
     "type" : "simple_field_multichoice_single",
@@ -134,15 +134,15 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "instance_settings" : {
       "description" : "",
-      "allowed_values" : [  ],
+      "allowed_values" : [],
       "allowed_values_function" : "",
       "user_register_form" : false
     },
-    "widget_settings" : [  ],
-    "formatter_settings" : [  ],
+    "widget_settings" : [],
+    "formatter_settings" : [],
     "required" : "0",
     "field_name" : "sf_language",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_numberoftimescontacted'] = entity_import('simple_field', '{
     "type" : "simple_field_integer",
@@ -156,7 +156,7 @@ function simple_field_demo_customers_default_simple_field() {
       "suffix" : "",
       "user_register_form" : false
     },
-    "widget_settings" : [  ],
+    "widget_settings" : [],
     "formatter_settings" : {
       "thousand_separator" : " ",
       "decimal_separator" : ".",
@@ -165,7 +165,7 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "required" : "0",
     "field_name" : "sf_numberoftimescontacted",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_phonenumber'] = entity_import('simple_field', '{
     "type" : "simple_field_short_answer",
@@ -178,10 +178,10 @@ function simple_field_demo_customers_default_simple_field() {
       "user_register_form" : false
     },
     "widget_settings" : { "size" : 60 },
-    "formatter_settings" : [  ],
+    "formatter_settings" : [],
     "required" : "0",
     "field_name" : "sf_phonenumber",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   $items['sf_productsofinterest'] = entity_import('simple_field', '{
     "type" : "simple_field_multichoice_multi",
@@ -197,15 +197,15 @@ function simple_field_demo_customers_default_simple_field() {
     },
     "instance_settings" : {
       "description" : "",
-      "allowed_values" : [  ],
+      "allowed_values" : [],
       "allowed_values_function" : "",
       "user_register_form" : false
     },
-    "widget_settings" : [  ],
-    "formatter_settings" : [  ],
+    "widget_settings" : [],
+    "formatter_settings" : [],
     "required" : "0",
     "field_name" : "sf_productsofinterest",
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   return $items;
 }
