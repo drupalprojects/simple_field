@@ -1,7 +1,7 @@
 name = "Simple Field Demo Customers"
 description = "Demo of simple field module: customers content type and view"
 core = "7.x"
-package = "Features"
+package = "Simple Field"
 php = "5.2.4"
 dependencies[] = "ctools"
 dependencies[] = "date"
