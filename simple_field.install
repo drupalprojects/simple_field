@@ -106,7 +106,7 @@ function simple_field_update_7000() {
     'not null' => TRUE,
     'default' => '',
   ));
-  db_add_field('simple_field', 'status',array(
+  db_add_field('simple_field', 'status', array(
     'type' => 'int',
     'not null' => TRUE,
     'default' => 0x01, // ENTITY_CUSTOM
@@ -117,6 +117,8 @@ function simple_field_update_7000() {
     'length' => 255,
     'not null' => FALSE,
   ));
+
+  // Populate new field_name column using data from field_id.
   $ids = db_select('simple_field', 'sf')->fields('sf', array('id', 'field_id'))->execute()->fetchAllKeyed();
   $fields = field_info_field_by_ids();
   foreach ($ids as $id => $field_id) {

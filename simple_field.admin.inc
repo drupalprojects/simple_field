@@ -73,7 +73,7 @@ function simple_field_admin_settings_form_submit($form, &$form_state) {
       if ($enabled) {
         variable_set($var, TRUE);
       }
-      else if (variable_get($var, FALSE)) {
+      elseif (variable_get($var, FALSE)) {
         // Using variable_del to disable to avoid having TONS of variables when
         // there are a lot of bundles. Chances are 'all' will be selected for
         // entity types with lots of bundles anyway, so saving a variable for

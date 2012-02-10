@@ -613,7 +613,7 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
   if (in_array($op, array('update', 'delete', 'view')) && !entity_access($op, 'simple_field', $entity, $account)) {
     return FALSE;
   }
-  else if ($op == 'create') {
+  elseif ($op == 'create') {
     if (!entity_access($op, 'simple_field', 'simple_field', $account)) {
       return FALSE;
     }
@@ -660,7 +660,7 @@ function simple_field_entity_access($op, $entity, $account, $entity_type) {
   if (!user_access('administer simple fields', $account)) {
     return FALSE;
   }
-  if (in_array($op, array('update','delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
+  if (in_array($op, array('update', 'delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
     return FALSE;
   }
   switch ($op) {
