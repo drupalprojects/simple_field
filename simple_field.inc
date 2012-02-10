@@ -271,7 +271,7 @@ function simple_field_build_field($simplefield) {
 
   return array(
     'settings' => $settings,
-    'field_name' => simple_field_unique_field_name($settings['label'], 'sf_'),
+    'field_name' => empty($settings['label']) ? '' : simple_field_unique_field_name($settings['label'], 'sf_'),
     'translatable' => FALSE,
     'type' => $type_info['field'],
     'cardinality' => $type_info['cardinality'],
