@@ -604,11 +604,6 @@ function simple_field_save($simplefield) {
  */
 function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, $account = NULL) {
 
-  // Check global permissions.
-  if (!user_access('administer simple fields', $account)) {
-    return FALSE;
-  }
-
   // Check using standard entity_access
   if (in_array($op, array('update', 'delete', 'view')) && !entity_access($op, 'simple_field', $entity, $account)) {
     return FALSE;
@@ -624,6 +619,7 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
     }
   }
 
+
   if (in_array($op, array('instance-create', 'instance-delete', 'instance-list')) &&
       !simple_field_instance_access($op, $entity, $account)) {
     return FALSE;
@@ -636,7 +632,6 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
       return FALSE;
     }
   }
-
 
   return TRUE;
 }
@@ -657,11 +652,11 @@ function simple_field_access($op, $entity, $entity_type = NULL, $bundle = NULL, 
  *   TRUE or FALSE for access to given op and entity.
  */
 function simple_field_entity_access($op, $entity, $account, $entity_type) {
-  if (!user_access('administer simple fields', $account)) {
-    return FALSE;
-  }
   if (in_array($op, array('update', 'delete')) && !simple_field_type_access($op, $entity->getTypeInfo(), $account)) {
     return FALSE;
+  }
+  if (user_access('administer simple fields', $account)) {
+    return TRUE;
   }
   switch ($op) {
     case 'view':
@@ -697,7 +692,8 @@ function simple_field_type_access($op, $type, $account = NULL) {
   if (is_array($type)) {
     $type = $type['type'];
   }
-  return user_access($op . ' all simple field types', $account) ||
+  return user_access('administer simple fields', $account) ||
+         user_access($op . ' all simple field types', $account) ||
          user_access($op . ' simple fields with type ' . $type, $account);
 
 }
@@ -706,6 +702,10 @@ function simple_field_type_access($op, $type, $account = NULL) {
  * Check access to instances.
  */
 function simple_field_instance_access($op, $entity, $account = NULL) {
+  if (user_access('administer simple fields', $account)) {
+    return TRUE;
+  }
+
   switch ($op) {
     case 'instance-create':
       return user_access('create simple field instances', $account);
