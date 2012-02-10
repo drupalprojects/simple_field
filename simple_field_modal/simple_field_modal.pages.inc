@@ -54,9 +54,12 @@ function simple_field_modal_page($page_callback) {
       $bundle = field_extract_bundle($entity_type, $args[1]);
       $entity_info = entity_get_info($entity_type);
       $bundle_info = $entity_info['bundles'][$bundle];
+
+      $path = isset($bundle_info['admin']['real path']) ? $bundle_info['admin']['real path'] : $bundle_info['admin']['path'];
+
       // Override add page to set the action and pass form_state
       $content = simple_field_add_with_instance_page($args[0], $args[1], $args[2], $form_state);
-      $content['#action'] = url($bundle_info['admin']['real path'] . '/simple-fields/add/' . $args[2]['type'] . '/ajax');
+      $content['#action'] = url($path . '/simple-fields/add/' . $args[2]['type'] . '/ajax');
       $form_state = $content['#simple_field_form_state'];
     }
     else {

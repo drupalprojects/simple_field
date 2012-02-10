@@ -564,7 +564,8 @@ function simple_field_add_with_instance_type_select_form_submit($form, &$form_st
   $bundle_info = $entity_info['bundles'][$form_state['values']['bundle']];
 
   $options = array();
-  $path = $bundle_info['admin']['real path'] . '/simple-fields/add/' . $form_state['values']['type'];
+  $bundle_path = isset($bundle_info['admin']['real path']) ? $bundle_info['admin']['real path'] : $bundle_info['admin']['path'];
+  $path = $bundle_path . '/simple-fields/add/' . $form_state['values']['type'];
 
   // If there is a destination, we preserve it for the next page.
   if (isset($_GET['destination'])) {
@@ -572,7 +573,7 @@ function simple_field_add_with_instance_type_select_form_submit($form, &$form_st
     unset($_GET['destination']);
   }
   else {
-    $options['query']['destination'] = $bundle_info['admin']['real path'] . '/simple-fields';
+    $options['query']['destination'] = $bundle_path . '/simple-fields';
   }
 
   $form_state['redirect'] = array($path, $options);
