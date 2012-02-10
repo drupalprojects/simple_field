@@ -338,13 +338,26 @@ function simple_field_instance_overview_form($form, &$form_state, $entity_type, 
 
     $row['data'][] = check_plain($simplefield->label());
     $row['data'][] = check_plain($simplefield->getTypeInfo('label'));
-    $row['data'][] = l(
-      t('remove'),
-      $admin_path . '/simple-fields/instance-remove/' . $simplefield->identifier(),
-      array('query' => array(
-        'token' => drupal_get_token('delete' . $entity_type . $bundle . $simplefield->identifier()),
-      ))
-    );
+    $row['data'][] = array('data' => array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href' => 'admin/structure/simple-field/manage/' . $simplefield->identifier(),
+      '#options' => array(
+        'query' => drupal_get_destination(),
+      ),
+      '#access' => simple_field_access('update', $simplefield),
+    ));
+    $row['data'][] = array('data' => array(
+      '#type' => 'link',
+      '#title' => t('remove'),
+      '#href' => $admin_path . '/simple-fields/instance-remove/' . $simplefield->identifier(),
+      '#options' => array(
+        'query' => array(
+          'token' => drupal_get_token('delete' . $entity_type . $bundle . $simplefield->identifier()),
+        ),
+      ),
+      '#access' => simple_field_access('instance-delete', $simplefield),
+    ));
     $rows[$simplefield->id] = $row;
 
   }
@@ -362,7 +375,7 @@ function simple_field_instance_overview_form($form, &$form_state, $entity_type, 
     t('Type'),
     array(
       'data' => t('Operations'),
-      'colspan' => 1,
+      'colspan' => 2,
     ),
   );
 
