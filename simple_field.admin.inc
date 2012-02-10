@@ -354,9 +354,7 @@ function simple_field_instance_overview_form($form, &$form_state, $entity_type, 
       '#title' => t('remove'),
       '#href' => $admin_path . '/simple-fields/instance-remove/' . $simplefield->identifier(),
       '#options' => array(
-        'query' => array(
-          'token' => drupal_get_token('delete' . $entity_type . $bundle . $simplefield->identifier()),
-        ),
+        'query' => drupal_get_destination(),
       ),
       '#access' => simple_field_access('instance-delete', $simplefield),
     ));
@@ -506,22 +504,39 @@ function simple_field_instance_add_callback($entity_type, $bundle, $simplefield)
   drupal_goto($admin_path . '/simple-fields');
 }
 
+
 /**
  * Menu callback to remove a field instance from a given bundle.
  */
-function simple_field_instance_delete_callback($entity_type, $bundle, $simplefield) {
+function simple_field_instance_delete_form($form, &$form_state, $entity_type, $bundle, $simplefield) {
   $bundle = field_extract_bundle($entity_type, $bundle);
-  $admin_path = _field_ui_bundle_admin_path($entity_type, $bundle);
-  if (isset($_GET['token']) && drupal_valid_token($_GET['token'], 'delete' . $entity_type . $bundle . $simplefield->identifier())) {
-    $field = $simplefield->getField();
-    $instance = field_info_instance($entity_type, $field['field_name'], $bundle);
-    field_delete_instance($instance, FALSE);
-    drupal_set_message(t('Field instance successfully removed.'));
-  }
-  else {
-    drupal_set_message(t('There was an error processing the request.'), 'error');
-  }
-  drupal_goto($admin_path . '/simple-fields');
+  $field = $simplefield->getField();
+
+  $form['entity_type'] = array(
+    '#type' => 'hidden',
+    '#default_value' => $entity_type,
+  );
+  $form['bundle'] = array(
+    '#type' => 'hidden',
+    '#default_value' => $bundle,
+  );
+  $form['field_name'] = array(
+    '#type' => 'hidden',
+    '#default_value' => $field['field_name'],
+  );
+  $instance = field_info_instance($entity_type, $field['field_name'], $bundle);
+  return confirm_form($form, t('Are you sure you want to remove this %inst_label instance?', array('%inst_label' => $instance['label'])),
+                      NULL, t('All data associated with this instance of the field will be lost. This action cannot be undone.'), t('Delete'));
+}
+
+function simple_field_instance_delete_form_submit($form, &$form_state) {
+  $vals = $form_state['values'];
+  $entity_type = $vals['entity_type'];
+  $field_name = $vals['field_name'];
+  $bundle = $vals['bundle'];
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  field_delete_instance($instance, FALSE);
+  drupal_set_message(t('Field instance successfully removed.'));
 }
 
 /**
