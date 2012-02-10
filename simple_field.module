@@ -106,6 +106,8 @@ function simple_field_permission() {
      * them indirectly via 'simple_field_enabled'.
      */
   foreach (entity_get_info() as $entity_type => $entity_info) {
+    if (empty($entity_info['fieldable'])) continue;
+
     $type_perms = array();
     $type_perms['administer simple fields for entity ' . $entity_type] = array(
       'title' => t('Administer Simple Fields for Entity Type %type', array('%type' => $entity_info['label'])),

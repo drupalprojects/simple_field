@@ -17,6 +17,8 @@ function simple_field_admin_settings_form($form, &$form_state) {
   );
 
   foreach (entity_get_info() as $entity_type => $entity_info) {
+    if (empty($entity_info['fieldable'])) continue;
+
     $options = array();
     $defaults = array();
     foreach ($entity_info['bundles'] as $bundle => $bundle_info) {
